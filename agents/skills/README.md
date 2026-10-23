@@ -15,12 +15,15 @@ duplicarlas ni sustituir la revision independiente de Testing y Security.
 | [ledger-idempotency](ledger-idempotency/SKILL.md) | ledger_specialist |
 | [application-security](application-security/SKILL.md) | security_reviewer |
 | [java-backend](java-backend/SKILL.md) | backend_engineer |
-| [angular-frontend](angular-frontend/SKILL.md) | frontend_engineer |
+| [angular-frontend](angular-frontend/SKILL.md) | AI Engineering y frontend_engineer (transversal) |
+| [frontend-onboarding-hu01](angular-frontend/frontend-onboarding-hu01.md) | frontend_engineer |
+| [frontend-payment-hu02](angular-frontend/frontend-payment-hu02.md) | frontend_engineer |
+| [frontend-idempotency-hu04](angular-frontend/frontend-idempotency-hu04.md) | frontend_engineer |
 | [podman-observability](podman-observability/SKILL.md) | platform_engineer |
 | [wallet-testing](wallet-testing/SKILL.md) | quality_reviewer |
 
-Las asignaciones permiten compartir capacidades. Cada carpeta contiene un
-SKILL.md con name, description, procedimiento y salida esperada. Agregar
+Las asignaciones permiten compartir capacidades. Cada skill tiene un archivo
+con name, description, procedimiento y salida esperada. Agregar
 references/, templates/ o scripts/ solo cuando haya recursos concretos: no
 crear directorios vacios ni duplicar fuentes de requisitos.
 
