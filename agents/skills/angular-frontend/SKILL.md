@@ -1,47 +1,87 @@
 ---
 name: angular-frontend
-description: "Aplicar convenciones transversales de Angular al integrar tareas frontend aprobadas, sin sustituir las skills especificas de HU."
+description: Estandariza la definicion de funcionalidades Angular del wallet antes de implementarlas, con alcance, decisiones, riesgos, aceptacion y validacion trazables.
 ---
 
-# Frontend Angular
+# Skill: Angular Frontend -> Feature Intake
 
-## Proposito
+## 1) Metadata
 
-Definir practicas comunes para cambios Angular del wallet. Usar junto con la
-skill de HU asignada; esta skill no combina ni amplía el alcance funcional.
+- **Skill ID:** angular-frontend
+- **Version:** 0.1.0
+- **Purpose:** Estandarizar propuestas frontend Angular previas a la implementacion, sin reemplazar la skill especifica de HU.
+- **Audience (roles):** Frontend, AI Engineering, PO, Tech Lead, Backend, QA, Cyber.
+- **When to use:** Antes de crear tareas de implementacion frontend o abrir un PR funcional significativo.
+- **When NOT to use:** Incidentes P1, cambios triviales o tareas que no alteren comportamiento frontend.
+- **Sensitive inputs:** Solo datos sinteticos; no incluir PII real, credenciales, secretos, tokens ni URLs internas no autorizadas.
+- **Expected output:** Un documento Markdown con la estructura de Output.
 
-## Entradas
+## 2) Inputs
 
-- Tarea OpenSpec aprobada, criterios y escenarios de la HU asignada.
-- Convenciones y contratos aprobados del frontend.
-- Plan de Testing y revision de Security aplicables.
+Proporciona la informacion disponible en este formato; declara lo que falte:
 
-## Flujo
+- **Business context (brief):**
+- **Feature request / user story:** HU activa y criterios de aceptacion.
+- **Expected impact (metric or outcome):**
+- **Scope (in/out):**
+- **Known technical constraints:** Angular/TypeScript y convenciones aprobadas.
+- **Known risks:** Seguridad, privacidad, accesibilidad y estabilidad.
+- **Dependencies:** Contratos BFF, diseno, Security y plan de Testing.
+- **Team Definition of Done (DoD):** Si existe.
 
-1. Revisar los [limites frontend](../../../frontend/README.md) y los patrones
-   existentes antes de proponer componentes, servicios o dependencias.
-2. Mantener responsabilidades claras: componentes para presentacion y flujo,
-   servicios para integraciones y validadores reutilizables cuando corresponda.
-3. Usar tipos explicitos, nombres descriptivos y funciones pequenas; evitar
-   duplicar reglas de negocio o logica HTTP.
-4. Construir layouts responsive y accesibles, con labels, foco y errores
-   asociados al control; no depender solo del color.
-5. Consumir solo el BFF con sesion protegida. No persistir tokens en
-   `localStorage` ni acceder directamente a Meilisearch.
-6. Proponer pruebas focalizadas; reportar comandos y evidencia solo si se
-   ejecutaron realmente en el entorno disponible.
+Referencias: [limites frontend](../../../frontend/README.md), requisitos activos
+y la skill especifica de HU aplicable.
 
-## Restricciones
+## 3) Output
 
-- No inventar rutas, APIs, estados, limites financieros ni decisiones abiertas.
-- No agregar vistas de HU diferidas ni busqueda por conceptos hasta resolver Q-17.
-- No usar HTML dinamico inseguro ni exponer datos personales en logs, URLs o
-  telemetria.
-- No agregar dependencias ni afirmar que existe un proyecto Angular: aun no hay
-  workspace frontend en el repositorio.
+Devuelve solo un documento Markdown con estas secciones:
 
-## Skills por historia
+1. **Summary**
+2. **Scope**
+   - Dentro del alcance
+   - Fuera del alcance
+3. **Supuestos**
+4. **Decisiones tecnicas por tomar (pendientes o resueltas)**
+5. **Riesgos y mitigaciones**
+6. **Criterios de aceptacion (medibles)**
+7. **Plan de validacion**
+   - Pruebas unitarias
+   - Pruebas funcionales
+   - Seguridad (comprobaciones minimas)
+   - Evidencia requerida
+8. **Tareas sugeridas por rol**
+   - Chapter/PO
+   - Tech Lead
+   - Backend
+   - Frontend
+   - QA
+   - Cyber
+9. **Preguntas abiertas**
 
-- [Onboarding HU-01](frontend-onboarding-hu01.md)
-- [Pago P2P HU-02](frontend-payment-hu02.md)
-- [Reintentos HU-04](frontend-idempotency-hu04.md)
+## 4) Constraints
+
+- No inventar requisitos, APIs, estados ni politicas; registrar lo desconocido en Preguntas abiertas.
+- No proponer herramientas o dependencias fuera del stack aprobado.
+- No incluir datos sensibles, ni registrar PII en logs, URLs o telemetria.
+- Distinguir propuestas, decisiones aprobadas y evidencia ejecutada.
+- No tratar la UI como frontera de autorizacion; consumir el BFF y nunca acceder directamente a Meilisearch.
+- No generar codigo ni afirmar que existe una aplicacion Angular: este repositorio aun no tiene workspace frontend.
+- Seguir la skill de HU para limites funcionales, pagos y datos personales.
+
+## 5) Validation Rules
+
+El documento de salida es valido si:
+
+- Incluye las nueve secciones y las subsecciones indicadas en Output.
+- Tiene al menos tres criterios verificables y al menos dos riesgos con mitigaciones.
+- Para Tech Lead, Backend y QA propone al menos tres tareas cada uno o explica por que el rol no aplica a este alcance frontend.
+- Separa tareas frontend de dependencias/revisiones de otros roles.
+- Incluye evidencia concreta y no presenta checks pendientes como ejecutados.
+- No contiene secretos ni supuestos sin declarar.
+
+## 6) Evidence
+
+- Referenciar este archivo versionado y la HU/criterios que sustentan la propuesta.
+- Adjuntar el documento de salida, resultados reales de checks y evidencia visual o checklist cuando existan.
+- Los ejemplos `examples/input.sample.md` y `examples/output.sample.md` quedan pendientes hasta que se creen; no afirmar que existen.
+- Tag sugerido: `skill-angular-frontend-v0.1.0`. No crear tags ni commits automaticamente.

@@ -1,64 +1,84 @@
 ---
 name: frontend-payment-hu02
-description: "Definir el flujo frontend de pago P2P HU-02 identificado por DNI, con monto y confirmacion de resultado sin inferir estados financieros."
+description: Estandariza la definicion frontend del pago P2P HU-02 identificado por DNI, con confirmacion y estados verificables.
 ---
 
-# Frontend Pago P2P HU-02
+# Skill: Frontend Pago P2P HU-02 -> Spec Checklist
 
-## Proposito
+## 1) Metadata
 
-Delimitar la experiencia frontend para iniciar y consultar un pago P2P de bajo
-monto, con DNI como identificador del destino. El DNI no es autenticacion ni
-prueba de identidad.
+- **Skill ID:** frontend-payment-hu02
+- **Version:** 0.1.0
+- **Purpose:** Definir una propuesta frontend trazable para el pago P2P HU-02 antes de habilitar implementacion.
+- **Audience (roles):** Chapter/PO, Tech Lead, Backend, Frontend, QA, Cyber.
+- **When to use:** Antes de crear tareas frontend de HU-02 o abrir un PR funcional significativo.
+- **When NOT to use:** Incidentes P1, cambios triviales o pagos con dinero/proveedores reales.
+- **Sensitive inputs:** Solo datos sinteticos; no usar DNI/celulares reales, credenciales, secretos o tokens.
+- **Expected output:** Un documento Markdown con la estructura de Output.
 
-## Entradas
+## 2) Inputs
 
-- HU-02 y criterios de aceptacion activos.
-- Contratos aprobados de consulta de destino, creacion/consulta de pago e
-  historial.
-- Diseno aprobado y resoluciones aplicables de Q-04 (monto), Q-05 (estados) y
-  Q-11 (sesiones).
-- Proteccion de idempotencia de HU-04 verificada antes de habilitar pagos.
+- **Business context (brief):**
+- **Feature request / user story:** HU-02 y criterios de aceptacion.
+- **Expected impact (metric or outcome):** Confirmacion comprensible del resultado; no declarar objetivos de checkout o MAU como resultados.
+- **Scope (in/out):** Identificar destino por DNI, revisar monto y confirmar/consultar resultado; excluir conceptos/filtros pendientes de Q-17.
+- **Known technical constraints:** BFF aprobado, moneda PEN y fuente autoritativa de estado.
+- **Known risks:** DNI de tercero, cambio de monto/destino, resultado incierto o doble envio.
+- **Dependencies:** Contratos BFF, Q-04, Q-05, Q-11, HU-04 verificada, Security y Testing.
+- **Team Definition of Done (DoD):** Si existe.
 
-## Salidas
+Referencias: [HU-02](../../../docs/requirements/user-stories/payer-low-value-payment-confirmation.sp.md),
+[limites frontend](../../../frontend/README.md) y [preguntas abiertas](../../../docs/requirements/open-questions.md).
 
-- Flujo responsive para DNI destino, monto, confirmacion y resultado.
-- Identidad minima del destino y monto visibles antes de confirmar.
-- Referencia e historial para pagos exitosos, segun contrato aprobado.
-- Estados de carga, validacion, pendiente/incierto, terminal y error, con
-  pruebas/evidencia identificadas.
+## 3) Output
 
-## Flujo
+Devuelve solo un documento Markdown con estas secciones:
 
-1. Confirmar que la tarea OpenSpec cubre HU-02 y que HU-04 protege la ejecucion.
-   No habilitar una accion de pago si falta esa verificacion.
-2. Tratar el DNI como string. Aplicar el formato aprobado; si aun no existe,
-   proponer ocho digitos ASCII y marcarlo como pendiente de confirmacion.
-3. Consultar el destino solo mediante el BFF. Mostrar la identidad minima
-   devuelta por el contrato para que el pagador la revise; no exponer datos de
-   terceros ni asumir que el DNI por si solo valida la identidad.
-4. Representar el monto con moneda explicita PEN y precision decimal. No usar
-   calculos `float`/`double` ni inventar limites, redondeos o reglas de bajo
-   monto mientras Q-04 siga abierto.
-5. Presentar identidad y monto antes de confirmar; evitar doble submit y cambios
-   silenciosos en destino o monto tras la confirmacion.
-6. Mostrar como terminal solo los estados autoritativos del contrato. HTTP 202,
-   timeout, desconexion o estado desconocido significan pendiente/incierto, no
-   pago fallido; consultar la referencia antes de permitir otro intento.
-7. Mostrar referencia en exito e incluir el movimiento en el historial segun
-   contrato. No agregar busqueda por concepto/filtros antes de resolver Q-17.
+1. **Summary**
+2. **Scope**
+   - Dentro del alcance: DNI destino, monto, revision, confirmacion, referencia e historial segun contrato.
+   - Fuera del alcance: reglas no aprobadas, pagos reales y busqueda por conceptos/filtros hasta resolver Q-17.
+3. **Supuestos**
+4. **Decisiones tecnicas por tomar (pendientes o resueltas)**
+5. **Riesgos y mitigaciones**
+6. **Criterios de aceptacion (medibles)**
+7. **Plan de validacion**
+   - Pruebas unitarias de validaciones y mapeo de estados
+   - Pruebas funcionales de revision, confirmacion e historial
+   - Seguridad: sesion, datos del destinatario y errores
+   - Evidencia requerida
+8. **Tareas sugeridas por rol**
+   - Chapter/PO
+   - Tech Lead
+   - Backend
+   - Frontend
+   - QA
+   - Cyber
+9. **Preguntas abiertas**
 
-## Restricciones
+## 4) Constraints
 
-- No guardar tokens ni DNI en `localStorage`, logs, URLs o telemetria.
-- No llamar directamente a PostgreSQL, Meilisearch o proveedores desde el
-  navegador.
-- No inferir identidad, autorizacion, saldo ni resultado financiero en UI.
-- No iniciar construccion antes del gate humano y el control de HU-04.
+- Tratar DNI como string; si el formato de ocho digitos ASCII no esta aprobado por el contrato, presentarlo solo como propuesta pendiente.
+- Mostrar identidad del destino y monto antes de confirmar, conforme al contrato; DNI no es autenticacion ni prueba de identidad.
+- Usar PEN y precision decimal; no inventar limite, redondeo o frecuencia mientras Q-04 siga abierto.
+- No declarar terminal un HTTP 202, timeout, desconexion o ausencia de resultado de busqueda; consultar el estado autoritativo.
+- No habilitar pagos antes de verificar las invariantes de HU-04.
+- No acceder a PostgreSQL, Meilisearch o proveedores desde el navegador; no exponer DNI en logs, URLs o telemetria.
 
-## Verificacion
+## 5) Validation Rules
 
-Cubrir DNI invalido, destino no encontrado o respuesta inconsistente, revision
-de monto/destino, submit repetido, HTTP 202, timeout, cada estado terminal,
-referencia e historial. Probar accesibilidad y layouts responsive; adjuntar solo
-resultados realmente ejecutados.
+El documento de salida es valido si:
+
+- Incluye las nueve secciones y separa decisiones aprobadas, propuestas y bloqueos.
+- Tiene al menos tres criterios verificables para revision del DNI/destino y monto, confirmacion y resultado/referencia.
+- Incluye al menos dos riesgos con mitigaciones concretas.
+- En tareas por rol, da al menos tres tareas a Tech Lead, Backend y QA o explica por que no aplican; no asigna a frontend autorizacion financiera.
+- El plan cubre estados inciertos y evidencia realmente obtenible.
+- No contiene datos reales ni supuestos sin declarar.
+
+## 6) Evidence
+
+- Referenciar este archivo versionado y HU-02/CA1-6.
+- Adjuntar el documento de salida, matriz criterio/escenario y resultados reales de pruebas cuando existan.
+- Los ejemplos `examples/input.sample.md` y `examples/output.sample.md` quedan pendientes hasta que se creen; no afirmar que existen.
+- Tag sugerido: `skill-frontend-payment-hu02-v0.1.0`. No crear tags ni commits automaticamente.
