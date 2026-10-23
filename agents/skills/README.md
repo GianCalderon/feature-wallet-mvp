@@ -10,17 +10,22 @@ duplicarlas ni sustituir la revision independiente de Testing y Security.
 
 | Skill | Responsable principal |
 | --- | --- |
-| [requirements-refinement](requirements-refinement/SKILL.md) | product_analyst |
+| [wallet-product-owner](wallet-product-owner/SKILL.md) | product_analyst |
 | [wallet-architecture](wallet-architecture/SKILL.md) | solution_architect |
 | [ledger-idempotency](ledger-idempotency/SKILL.md) | ledger_specialist |
-| [application-security](application-security/SKILL.md) | security_reviewer |
+| application-security (referencias: [acceso](application-security/wallet-access-control.md), [integridad de pagos](application-security/wallet-payment-integrity.md), [PostgreSQL](application-security/wallet-postgres-security.md), [Angular](application-security/angular-frontend-security.md), [sesion/token](application-security/wallet-session-token-security.md), [telemetria](application-security/wallet-telemetry-privacy.md)) | security_reviewer |
 | [java-backend](java-backend/SKILL.md) | backend_engineer |
-| [angular-frontend](angular-frontend/SKILL.md) | frontend_engineer |
+| [database](database/SKILL.md) | backend_engineer (sin asignar en bindings) |
+| [angular-frontend](angular-frontend/SKILL.md) | AI Engineering y frontend_engineer (transversal) |
+| [frontend-onboarding-hu01](angular-frontend/frontend-onboarding-hu01.md) | frontend_engineer |
+| [frontend-payment-hu02](angular-frontend/frontend-payment-hu02.md) | frontend_engineer |
+| [frontend-idempotency-hu04](angular-frontend/frontend-idempotency-hu04.md) | frontend_engineer |
 | [podman-observability](podman-observability/SKILL.md) | platform_engineer |
-| [wallet-testing](wallet-testing/SKILL.md) | quality_reviewer |
+| [test-plan-coverage](wallet-testing/test-plan-coverage/SKILL.md) | quality_reviewer |
+| [automated-test-implementation](wallet-testing/automated-test-implementation/SKILL.md) | quality_reviewer |
 
-Las asignaciones permiten compartir capacidades. Cada carpeta contiene un
-SKILL.md con name, description, procedimiento y salida esperada. Agregar
+Las asignaciones permiten compartir capacidades. Cada skill tiene un archivo
+con name, description, procedimiento y salida esperada. Agregar
 references/, templates/ o scripts/ solo cuando haya recursos concretos: no
 crear directorios vacios ni duplicar fuentes de requisitos.
 

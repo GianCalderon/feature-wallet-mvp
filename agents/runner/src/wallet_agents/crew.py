@@ -44,9 +44,10 @@ class SpecialistRegistry:
                     raise RunnerError(f"Specialist instructions remain incomplete: {agent_id}")
                 instructions.append(profile[match.end():])
             for skill in bindings["agents"][agent_id]:
-                if not re.fullmatch(r"[a-z0-9-]+", skill):
+                if not re.fullmatch(r"[a-z0-9-]+(/[a-z0-9-]+)*(\.md)?", skill):
                     raise RunnerError("Invalid skill ID")
-                instructions.append(self.read(f"agents/skills/{skill}/SKILL.md"))
+                skill_file = skill if skill.endswith(".md") else f"{skill}/SKILL.md"
+                instructions.append(self.read(f"agents/skills/{skill_file}"))
             self.instructions[agent_id] = "\n\n".join(instructions)
         self.tasks = {}
         for phase, filename in (("definition", "definition-tasks"), ("construction", "construction-tasks")):

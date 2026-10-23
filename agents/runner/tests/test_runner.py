@@ -266,21 +266,37 @@ class StoreTests(unittest.TestCase):
                 ArtifactStore(root, root / "control")
 
 
+def configured_fixture(directory: str) -> Path:
+    """Copy the real profiles/skills, marking drafts as reviewed only in the temporary copy."""
+    repository = Path("/repository")
+    fixture = Path(directory)
+    shutil.copytree(repository / "agents", fixture / "agents", ignore=shutil.ignore_patterns("runner", "runs"))
+    for relative in ("AGENTS.md", "architecture/README.md", "docs/requirements/open-questions.md"):
+        target = fixture / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(repository / relative, target)
+    for profile in (fixture / "agents/specialists").glob("*.md"):
+        text = profile.read_text().replace("status: draft", "status: configured").replace("[ ]", "[x]")
+        profile.write_text(text)
+    return fixture
+
+
 class RegistryTests(unittest.TestCase):
+    def test_draft_profiles_in_the_real_repository_are_rejected(self):
+        if not Path("/repository").exists():
+            self.skipTest("Repository fixture mount is required")
+        drafts = [path.name for path in Path("/repository/agents/specialists").glob("*.md")
+                  if "status: draft" in path.read_text()]
+        if not drafts:
+            self.skipTest("All specialist profiles are reviewed")
+        with self.assertRaises(RunnerError):
+            SpecialistRegistry(Path("/repository"))
+
     def test_existing_profiles_are_actually_loaded_and_revision_bound(self):
-        repository = Path("/repository")
-        if not repository.exists():
+        if not Path("/repository").exists():
             self.skipTest("Repository fixture mount is required")
         with tempfile.TemporaryDirectory() as directory:
-            fixture = Path(directory)
-            shutil.copytree(repository / "agents", fixture / "agents", ignore=shutil.ignore_patterns("runner", "runs"))
-            for relative in ("AGENTS.md", "architecture/README.md", "docs/requirements/open-questions.md"):
-                target = fixture / relative
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy(repository / relative, target)
-            for profile in (fixture / "agents/specialists").glob("*.md"):
-                text = profile.read_text().replace("status: draft", "status: configured").replace("[ ]", "[x]")
-                profile.write_text(text)
+            fixture = configured_fixture(directory)
             registry = SpecialistRegistry(fixture)
             self.assertTrue(PRINCIPAL_ROLES.issubset(registry.instructions))
             self.assertIn("# Arquitecto", registry.instructions["solution_architect"])
@@ -483,15 +499,16 @@ class NativeCrewAITests(unittest.TestCase):
             def supports_function_calling(self):
                 return False
 
-        registry = SpecialistRegistry(Path("/repository"))
-        policy = RuntimePolicy(model="offline-fixture", max_calls=5, max_output_tokens=1000,
-            max_context_bytes=500000, max_seconds=60, max_corrections=1,
-            approved_profiles=sorted(PRINCIPAL_ROLES))
-        with patch("crewai.LLM", return_value=LocalLLM(model="offline-fixture")):
-            crew = DefinitionCrewFactory(registry, policy).build("design_architecture", {"change_id": "offline"})
-            self.assertIn("# Arquitecto", crew.agents[0].backstory)
-            self.assertIn("OpenAPI", crew.agents[0].backstory)
-            result = crew.kickoff()
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SpecialistRegistry(configured_fixture(directory))
+            policy = RuntimePolicy(model="offline-fixture", max_calls=5, max_output_tokens=1000,
+                max_context_bytes=500000, max_seconds=60, max_corrections=1,
+                approved_profiles=sorted(PRINCIPAL_ROLES))
+            with patch("crewai.LLM", return_value=LocalLLM(model="offline-fixture")):
+                crew = DefinitionCrewFactory(registry, policy).build("design_architecture", {"change_id": "offline"})
+                self.assertIn("# Arquitecto", crew.agents[0].backstory)
+                self.assertIn("OpenAPI", crew.agents[0].backstory)
+                result = crew.kickoff()
         self.assertEqual(StageOutput.model_validate_json(result.raw).summary, response.summary)
         self.assertTrue(calls)
 
