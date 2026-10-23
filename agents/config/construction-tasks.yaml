@@ -1,0 +1,126 @@
+implement_backend:
+  description: >
+    Solo tras validacion determinista del gate humano por el runner, trabaja las
+    tareas backend permitidas de {change_id}. Contexto versionado: {approved_context}.
+    No implementes tareas fuera de alcance. Preserva dominio puro, invariantes,
+    idempotencia y autorizacion. Usa PostgreSQL para comandos/resultado financiero
+    y Meilisearch para busqueda derivada de movimientos/conceptos via outbox.
+    Solo HU-01 -> HU-02 -> HU-04, con gate idempotente antes de habilitar pagos.
+    Codigo y checks se ejecutan en contenedores. Si no hay tools/sandbox aprobados, entrega
+    propuesta textual y reporta construccion no ejecutada. Nunca simules checks.
+  expected_output: >
+    Por ID de tarea: cambios o propuesta, HU/CA/escenario, archivos, comandos
+    realmente ejecutados, resultado y bloqueos. No afirmar implementacion si
+    faltaron herramientas o evidencia.
+  agent: backend_engineer
+  markdown: true
+
+implement_frontend:
+  description: >
+    Trabaja solo tareas Angular autorizadas de {change_id} con contexto
+    {approved_context}. Respeta contratos aprobados, roles, validaciones,
+    accesibilidad y estados de pago incierto. No infieras exito financiero por
+    terminar una peticion HTTP. Reporta bloqueo si faltan runner/tools/contratos.
+    Limita vistas a onboarding, pago e historial buscable; distingue indice
+    atrasado/no disponible de pago fallido. Nunca accedas directamente al indice.
+  expected_output: >
+    Por ID de tarea: cambios o propuesta, HU/CA/escenario, evidencia responsive
+    y E2E realmente obtenida, errores y verificaciones pendientes.
+  agent: frontend_engineer
+  markdown: true
+
+implement_platform:
+  description: >
+    Trabaja solo tareas de Compose/OTel/CI permitidas de {change_id} con contexto
+    {approved_context}. No expongas secretos ni PII y no levantes servicios sin
+    permiso especifico. Separa eventos financieros de trazas muestreadas.
+    Todo en imagenes OCI y Compose Docker/Podman Desktop, incluidos aplicaciones,
+    PostgreSQL, Meilisearch, identidad, simuladores, OTel y runner CrewAI.
+    No montes sockets del motor en agentes ni exijas Java/Node/Python en el host.
+    Si no hay tools/sandbox, entrega propuesta y declara que nada se ejecuto.
+  expected_output: >
+    Por ID de tarea: configuracion propuesta o aplicada, evidencia real de
+    healthchecks/correlacion/redaccion y limites de entorno verificados.
+  agent: platform_engineer
+  markdown: true
+
+integrate_initiative:
+  description: >
+    AI Engineering integra las entregas autorizadas de {change_id} con
+    {approved_context} y los reportes de backend/frontend/plataforma. Verifica
+    compatibilidad de contratos y prepara el dossier por tarea HU/CA/escenario.
+    Cambios solo con aprobacion, sandbox y tools permitidos; si no existen,
+    reporta bloqueo y entrega propuesta, sin fingir integracion o ejecucion.
+    No cambiar specs/diseno/alcance sin renovar la aprobacion ni autoaprobarse.
+  expected_output: >
+    Entrega integrada o propuesta explicitamente no ejecutada, manifiesto de
+    cambios, evidencia real y bloqueos, lista para Arquitecto/Security/Testing.
+  agent: ai_engineer
+  context:
+    - implement_backend
+    - implement_frontend
+    - implement_platform
+  markdown: true
+
+review_architecture_implementation:
+  description: >
+    Arquitecto revisa la entrega integrada de {change_id} contra el diseno,
+    contratos, ADR y C4 de {approved_context}. Comprueba limites modulares,
+    autoridad PostgreSQL, proyeccion Meilisearch y fronteras transaccionales.
+    No modificar el codigo revisado ni convertir su revision en aprobacion humana.
+  expected_output: >
+    Informe de conformidad con referencias a artefactos/versiones, desviaciones,
+    severidad, bloqueos y correcciones dirigidas a AI Engineering.
+  agent: solution_architect
+  context:
+    - integrate_initiative
+  markdown: true
+
+review_security_implementation:
+  description: >
+    Security revisa de forma independiente {change_id} usando {approved_context},
+    entrega integrada y revision de Arquitecto. Contrasta amenazas y controles
+    con evidencia real de ownership, BFF, busqueda, privacidad y sandbox.
+    No modificar la implementacion, certificar el producto ni autorizar despliegue.
+  expected_output: >
+    Hallazgos por severidad, control/escenario/evidencia, verificaciones faltantes
+    y recomendacion para el humano; defectos remitidos a AI Engineering.
+  agent: security_reviewer
+  context:
+    - integrate_initiative
+    - review_architecture_implementation
+  markdown: true
+
+verify_change:
+  description: >
+    Revisa {change_id} contra el contexto aprobado {approved_context} y las
+    salidas anteriores. Verifica escenarios, trazabilidad, invariantes, seguridad,
+    recuperacion y privacidad. Reportes sin evidencia no prueban implementacion.
+    Incluye aislamiento de busqueda, reindex/fallos del indice y arranque completo
+    en Podman Desktop; no des por ejecutado un Compose que no existe.
+    No apruebes tu propio codigo ni archives/sincronices automaticamente.
+  expected_output: >
+    Hallazgos por severidad, evidencias comprobadas, checks faltantes y
+    recomendacion para el revisor humano. Tareas sin prueba quedan pendientes.
+  agent: quality_reviewer
+  context:
+    - integrate_initiative
+    - review_architecture_implementation
+    - review_security_implementation
+  markdown: true
+
+recommend_product_acceptance:
+  description: >
+    PO evalua {change_id} contra criterios funcionales de {approved_context} y
+    revisiones independientes. Recomienda aceptacion o correccion con evidencia;
+    cualquier bloqueo permanece abierto hasta resolucion humana. No autoaceptar,
+    marcar tareas completas sin evidencia ni sincronizar/archivar por si solo.
+  expected_output: >
+    Recomendacion funcional para el responsable humano, cobertura HU/CA,
+    evidencias y pendientes. La decision humana versionada se registra por separado.
+  agent: product_analyst
+  context:
+    - verify_change
+    - review_architecture_implementation
+    - review_security_implementation
+  markdown: true

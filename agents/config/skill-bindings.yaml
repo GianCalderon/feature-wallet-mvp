@@ -1,0 +1,41 @@
+schema_version: 2
+skills_root: agents/skills
+
+instruction_profiles:
+  product_analyst: agents/specialists/po.md
+  ai_engineer: agents/specialists/ai-engineering.md
+  quality_reviewer: agents/specialists/testing.md
+  solution_architect: agents/specialists/architect.md
+  security_reviewer: agents/specialists/security.md
+
+agents:
+  product_analyst:
+    - requirements-refinement
+  ai_engineer:
+    - wallet-architecture
+    - java-backend
+    - angular-frontend
+    - podman-observability
+  solution_architect:
+    - wallet-architecture
+    - ledger-idempotency
+    - application-security
+  ledger_specialist:
+    - ledger-idempotency
+  security_reviewer:
+    - application-security
+    - ledger-idempotency
+  backend_engineer:
+    - java-backend
+    - ledger-idempotency
+    - application-security
+  frontend_engineer:
+    - angular-frontend
+    - application-security
+  platform_engineer:
+    - podman-observability
+    - application-security
+  quality_reviewer:
+    - wallet-testing
+    - ledger-idempotency
+    - application-security

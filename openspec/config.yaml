@@ -1,0 +1,44 @@
+schema: spec-driven
+
+context: |
+  Seven Team Wallet Lab: caso de estudio para Peru, PEN y pagos P2P.
+  Solo dinero ficticio, datos sinteticos y proveedores/KYC simulados.
+  Alcance actual: estructura y documentacion; no implementar aplicaciones aun.
+  Fuentes: docs/requirements/epic y docs/requirements/user-stories (originales).
+  Alcance activo, en orden: HU-01 user-onboarding-mvp-completion.sp.md,
+  HU-02 payer-low-value-payment-confirmation.sp.md,
+  HU-04 payment-idempotency-protection.sp.md. No renumerar los IDs.
+  HU-03, HU-05 y HU-06 diferidas; conservar todos los originales intactos.
+  Stack acordado: Angular responsive; Java 21, Spring Boot, monolito modular,
+  CQRS, Clean Architecture, PostgreSQL write model y Meilisearch read model
+  para busqueda de movimientos y por conceptos, OpenTelemetry.
+  Todo se ejecutara en contenedores OCI mediante Compose compatible con Docker
+  y Podman Desktop, incluido el futuro runner CrewAI; sin runtimes en el host.
+  Ledger de doble partida; PostgreSQL es la fuente de verdad financiera.
+  Meilisearch es eventual/reconstruible y no autoriza saldos, pagos o idempotencia.
+  Indexacion via outbox, ownership en servidor, sin acceso directo del navegador.
+  Otras bases, broker, microservicios y event sourcing requieren justificacion y ADR.
+  Arquitectura objetivo y ADR iniciales en architecture; no estan implementados.
+  Las reglas pendientes estan en docs/requirements/open-questions.md.
+  CrewAI se habilitara despues de aprobar especificaciones y tareas.
+  No afirmar certificacion bancaria ni cumplimiento regulatorio real.
+
+rules:
+  proposal:
+    - Referenciar HU y criterios afectados, alcance y exclusiones.
+    - Enumerar bloqueos y aprobaciones humanas requeridas.
+  specs:
+    - Usar SHALL o MUST y escenarios WHEN/THEN verificables.
+    - Mantener trazabilidad a cada criterio de aceptacion; no inventar politicas.
+    - Cubrir estados inciertos, concurrencia, duplicados y privacidad cuando aplique.
+    - Respetar el orden HU-01, HU-02, HU-04; no activar pagos sin idempotencia.
+    - Cubrir busqueda por conceptos, aislamiento entre usuarios y retraso/reconstruccion del indice.
+  design:
+    - Respetar Clean Architecture y limites modulares; actualizar ADR y C4.
+    - Explicitar atomicidad, idempotencia, recuperacion y modelo de amenazas.
+    - Separar autoridad PostgreSQL y proyeccion Meilisearch sin dual writes no atomicos.
+    - Exigir contenedores OCI y Compose verificable con Podman Desktop.
+  tasks:
+    - Usar checklist numerado; cada tarea requiere evidencia y escenario asociado.
+    - Separar definicion, aprobacion, construccion y verificacion.
+    - Bloquear construccion hasta cerrar decisiones que afecten al cambio.

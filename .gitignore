@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.angular/
+coverage/
+target/
+.venv/
+__pycache__/
+*.pyc
+.crewai/
+agents/runs/*
+!agents/runs/README.md
+*.log
+.DS_Store
+Thumbs.db
