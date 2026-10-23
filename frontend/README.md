@@ -1,6 +1,9 @@
 # Frontend previsto
 
-Todavia no hay workspace Angular ni package.json. Se preve Angular/TypeScript
+Todavia no hay aplicacion Angular del producto. Existen solo dos prototipos con datos
+ficticios y sin backend: la [maqueta de pago HU-02/HU-04](prototype-hu02/README.md) y la
+[maqueta de onboarding, login y pagos](prototype-wallet-mvp/README.md); no sustituyen el
+diseno aprobado. Se preve Angular/TypeScript
 strict, web responsive para el pagador. Secuencia activa: HU-01 -> HU-02 -> HU-04.
 Comercio, soporte/disputas y conciliacion operativa quedan diferidos. No se
 requiere app nativa en esta fase. Build Node/Angular y servidor web se ejecutaran
