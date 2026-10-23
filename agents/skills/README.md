@@ -10,7 +10,7 @@ duplicarlas ni sustituir la revision independiente de Testing y Security.
 
 | Skill | Responsable principal |
 | --- | --- |
-| [requirements-refinement](requirements-refinement/SKILL.md) | product_analyst |
+| [wallet-product-owner](wallet-product-owner/SKILL.md) | product_analyst |
 | [wallet-architecture](wallet-architecture/SKILL.md) | solution_architect |
 | [ledger-idempotency](ledger-idempotency/SKILL.md) | ledger_specialist |
 | [application-security](application-security/SKILL.md) | security_reviewer |

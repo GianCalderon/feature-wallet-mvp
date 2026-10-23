@@ -10,7 +10,7 @@ instruction_profiles:
 
 agents:
   product_analyst:
-    - requirements-refinement
+    - wallet-product-owner
   ai_engineer:
     - wallet-architecture
     - java-backend
