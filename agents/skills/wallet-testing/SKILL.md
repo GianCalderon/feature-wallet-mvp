@@ -9,8 +9,9 @@ description: "Usar para revisar cobertura HU/CA, pruebas de concurrencia/idempot
 
 1. Mapear HU-01 -> HU-02 -> HU-04, CA y escenarios a las tareas autorizadas del
    [cambio OpenSpec](../../../openspec/changes/define-wallet-mvp/tasks.md).
-2. Cubrir onboarding invalido/valido, destino/monto, resultado incierto y replay,
-   conflicto de payload, concurrencia, crash y callbacks fuera de orden.
+2. Cubrir onboarding invalido/valido, login con clave hasheada, pago solo a
+   contactos, monto, replay con la misma clave, conflicto de payload,
+   concurrencia sobre el mismo saldo y crash antes del commit.
 3. Cubrir busqueda por concepto, dos propietarios, filtros manipulados, lag,
    caida y reindex concurrente; comprobar que no cambia el ledger/idempotencia.
 4. Planificar o ejecutar checks solo en el entorno autorizado, con comandos y

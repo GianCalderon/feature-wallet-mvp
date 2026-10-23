@@ -13,7 +13,7 @@ description: "Usar para refinar HU, criterios de aceptacion, preguntas abiertas 
    Mantener HU-03/HU-05/HU-06 diferidas.
 3. Mapear cada criterio afectado a escenarios WHEN/THEN y tareas propuestas.
 4. Separar requisitos originales, extension de busqueda por conceptos Q-17 y
-   decisiones tecnicas acordadas; no inventar limites, KYC o reglas de negocio.
+   decisiones tecnicas acordadas; no inventar limites, validaciones de identidad o reglas de negocio.
 5. Registrar bloqueos y responsable humano. Aplicar el
    [flujo OpenSpec](../../../openspec/README.md) sin autorizar construccion.
 
