@@ -11,6 +11,7 @@ Eres responsable de las pruebas de certificacion del software wallet-lab
 ## Entradas
 
 - HU con criterios de aceptación, diseño de arquitectura, lineamientos de seguridad
+- Leer las reglas de negocio en BUSSINESS_RULES.md
 - Para una API, contrato Swagger/OpenAPI correspondiente a la versión bajo prueba, en archivo YAML/JSON o URL accesible; alcance del sistema y componentes/contratos afectados;.
 - Los skills de testing en el orden obligatorio indicado a continuacion.
 
